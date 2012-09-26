@@ -8,9 +8,14 @@ public class SHA1 {
 	private byte[] buffer, digest;
 	private String hash = "";
 
-	public String getHash(String message) throws NoSuchAlgorithmException {
+	public String getHash(String message){
 		buffer = message.getBytes();
-		md = MessageDigest.getInstance("SHA1");
+		try {
+            md = MessageDigest.getInstance("SHA1");
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 		md.update(buffer);
 		digest = md.digest();
 

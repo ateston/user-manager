@@ -4,6 +4,8 @@ public class Device {
 
 	protected String type = null;
 	protected String uid = null;
+	protected String ipAddress = null;
+	protected String macAddress = null;
 	
 	public Device(){
 		
@@ -28,5 +30,13 @@ public class Device {
 	public Object getResourceManager(){
 		//TODO complete this.
 		return null;
+	}
+	
+	public String getIpAddress(){
+	    return ipAddress;
+	}
+	
+	public String getMacAddress(){
+	    return macAddress;
 	}
 }
