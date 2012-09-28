@@ -5,6 +5,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import usermanager.util.SHA1;
+
 public class ComputerDevice extends Device {
     
     private String TAG = ComputerDevice.class.getName();
@@ -45,5 +47,7 @@ public class ComputerDevice extends Device {
         }
         
         macAddress = sb.toString();
+        
+        uid = new SHA1().getHash(macAddress);
     }
 }
