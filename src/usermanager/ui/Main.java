@@ -45,7 +45,7 @@ public class Main {
 		System.out.println("Setting ur device... " + device.getIpAddress() + " " + device.getMacAddress());
 
 		User user = new User(username, password);
-		user.addDevice(device);
+		user.getDevices().add(device);
 
 		um.setUser(user, device);
 
@@ -176,7 +176,7 @@ public class Main {
 		device.setType(type);
 		device.setUid(new SHA1().getHash(type + (int)300 * Math.random()));
 
-		um.getCurrentUser().addDevice(device);
+		um.getCurrentUser().getDevices().add(device);
 		System.out.println("Added device of type: " + device.getType() + " and uid: " + device.getUid());
 	}
 

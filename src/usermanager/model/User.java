@@ -27,8 +27,4 @@ public class User {
     public List<Device> getDevices(){
         return devices;
     }
-
-    public void addDevice(Device device){
-        devices.add(device);
-    }
 }
