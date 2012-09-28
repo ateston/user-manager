@@ -8,6 +8,11 @@ public class SHA1 {
 	private byte[] buffer, digest;
 	private String hash = "";
 
+	/**
+	 * Hashes a string with SHA1 algorithm.
+	 * @param message string to hash.
+	 * @return SHA1 of the string.
+	 */
 	public String getHash(String message){
 		buffer = message.getBytes();
 		try {

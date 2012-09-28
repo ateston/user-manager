@@ -11,6 +11,9 @@ public class ComputerDevice extends Device {
     
     private String TAG = ComputerDevice.class.getName();
 
+    /**
+     * Constructor of ComputerDevice, sets the ip address and mac address from system resources.
+     */
     public ComputerDevice(){
         super();
         

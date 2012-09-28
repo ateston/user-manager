@@ -10,84 +10,138 @@ import usermanager.util.Status;
 
 public class UserManager {
 
-    private List<Sesion> sesions = null;
-    private Sesion currentSesion = null;
+	private List<Sesion> sesions = null;
+	private Sesion currentSesion = null;
 
-    private User currentUser;
-    private Device currentDevice;
+	private User currentUser;
+	private Device currentDevice;
 
-    private int STATUS = Status.DISCONNECTED;
+	private int STATUS = Status.DISCONNECTED;
 
-    public UserManager(){
-        sesions = new ArrayList<Sesion>();
-        STATUS = Status.DISCONNECTED;
-    }
+	/**
+	 * Constructor of user manager, inititalizes the list of sesions and sets default status (disconnected).
+	 */
+	public UserManager(){
+		sesions = new ArrayList<Sesion>();
+		STATUS = Status.DISCONNECTED;
+	}
 
-    public void setUser(User user, Device device){
-        this.currentUser = user;
-        this.currentDevice = device;
-    }
+	/**
+	 * Sets the user and device for this user manager.
+	 * @param user user for this user manager.
+	 * @param device device for this user manager. 
+	 */
+	public void setUser(User user, Device device){
+		this.currentUser = user;
+		this.currentDevice = device;
+	}
 
-    public Sesion getCurrentSesion(){
-        return currentSesion;
-    }
+	/**
+	 * Returns the current sesion.
+	 * @return the current sesion.
+	 */
+	public Sesion getCurrentSesion(){
+		return currentSesion;
+	}
 
-    public List<Sesion> getSesions(){
-        return sesions;
-    }
+	/**
+	 * Returns the list of sesions available.
+	 * @return list of sesions.
+	 */
+	public List<Sesion> getSesions(){
+		return sesions;
+	}
 
-    public Device getCurrentDevice(){
-        return currentDevice;
-    }
+	/**
+	 * Returns the current device.
+	 * @return current device.
+	 */
+	public Device getCurrentDevice(){
+		return currentDevice;
+	}
 
-    public User getCurrentUser(){
-        return currentUser;
-    }
+	/**
+	 * Returns the current user.
+	 * @return the current user.
+	 */
+	public User getCurrentUser(){
+		return currentUser;
+	}
 
-    public void addSesion(Sesion sesion){
-        sesions.add(sesion);
-    }
+	/**
+	 * Adds a sesion for this user manager.
+	 * @param sesion sesion to add.
+	 */
+	public void addSesion(Sesion sesion){
+		sesions.add(sesion);
+	}
 
-    public void joinSesion(Sesion sesion){
-        this.currentSesion = sesion;
-        STATUS = Status.CONNECTED;
-    }
+	/**
+	 * Switches the current sesion for the sesion given.
+	 * @param sesion sesion given to switch.
+	 */
+	public void joinSesion(Sesion sesion){
+		this.currentSesion = sesion;
+		STATUS = Status.CONNECTED;
+	}
 
-    public void leaveSesion(Sesion sesion){
-        this.currentSesion = null;
-        STATUS = Status.DISCONNECTED;
-    }
+	/**
+	 * Leaves the current sesion.
+	 * @param sesion sesion to leave.
+	 */
+	public void leaveSesion(Sesion sesion){
+		this.currentSesion = null;
+		STATUS = Status.DISCONNECTED;
+	}
 
-    public void disconnectDevice(Device device) throws NoSuchMethodException{
-        //TODO complete this.
-        throw new NoSuchMethodException();
-    }
+	/**
+	 * Disconnects the device.
+	 * @param device device for disconnect.
+	 * @throws NoSuchMethodException not implemented yet.
+	 */
+	public void disconnectDevice(Device device) throws NoSuchMethodException{
+		//TODO complete this.
+		throw new NoSuchMethodException();
+	}
 
-    public int getStatus(){
-        return STATUS;
-    }
+	/**
+	 * Returns the status of user manager.
+	 * @return status code.
+	 * @see usermanager.util.Status usermanager.util.Status for values.
+	 */
+	public int getStatus(){
+		return STATUS;
+	}
 
-    public String getUserMangerStatus(){
-        String sesion = "null";
-        String user = currentUser.getUsername();
-        String device = currentDevice.getMacAddress();
-        return "current sesion name: " + sesion + ", current username: " + user + "(" + STATUS + ")" +", current device: " + device;
-    }
+	/**
+	 * Returns a string status of the user manager (for logging).
+	 * @return String indicating the status of the user manager.
+	 */
+	public String getUserMangerStatus(){
+		String sesion = "null";
+		String user = currentUser.getUsername();
+		String device = currentDevice.getMacAddress();
+		return "current sesion name: " + sesion + ", current username: " + user + "(" + STATUS + ")" +", current device: " + device;
+	}
 
-    public String getStringStatus(){
-        switch(STATUS){
-        case Status.CONNECTED:
-            return "connected";
-        case Status.DISCONNECTED:
-            return "disconnected";
-        case Status.CONNECTING:
-            return "connecting";
-        case Status.UPDATED:
-            return "updated";
-        case Status.UPDATING:
-            return "updating";
-        }
-        return null;
-    }
+	/**
+	 * Returns a string indicating the status of the user manager.
+	 * @return status string.
+	 */
+	public String getStringStatus(){
+		switch(STATUS){
+		case Status.CONNECTED:
+			return "connected";
+		case Status.DISCONNECTED:
+			return "disconnected";
+		case Status.CONNECTING:
+			return "connecting";
+		case Status.UPDATED:
+			return "updated";
+		case Status.UPDATING:
+			return "updating";
+		}
+		return null;
+	}
 
 }
