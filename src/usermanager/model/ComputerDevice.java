@@ -1,5 +1,6 @@
 package usermanager.model;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -7,7 +8,9 @@ import java.net.UnknownHostException;
 
 import usermanager.util.SHA1;
 
-public class ComputerDevice extends Device {
+public class ComputerDevice extends Device implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
     
     private String TAG = ComputerDevice.class.getName();
 

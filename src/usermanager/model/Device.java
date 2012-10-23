@@ -1,8 +1,12 @@
 package usermanager.model;
 
-public class Device {
+import java.io.Serializable;
 
-	protected String type = null;
+public class Device implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    
+    protected String type = null;
 	protected String uid = null;
 	protected String ipAddress = null;
 	protected String macAddress = null;

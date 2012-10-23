@@ -1,6 +1,8 @@
 package usermanager;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import usermanager.model.Device;
@@ -8,20 +10,31 @@ import usermanager.model.Sesion;
 import usermanager.model.User;
 import usermanager.util.Status;
 
-public class UserManager {
+public class UserManager implements IUserManager, Serializable {
 
-	private List<Sesion> sesions = null;
+    private static final long serialVersionUID = 1L;
+    
+    private List<Sesion> sesions = null;
 	private Sesion currentSesion = null;
 
 	private User currentUser;
 	private Device currentDevice;
+	
+	private static UserManager um;
+	
+	public static UserManager getInstance(){
+	    if(um == null){
+	        um = new UserManager();
+	    }
+	    return um;
+	}
 
 	private int STATUS = Status.DISCONNECTED;
 
 	/**
 	 * Constructor of user manager, inititalizes the list of sesions and sets default status (disconnected).
 	 */
-	public UserManager(){
+	private UserManager(){
 		sesions = new ArrayList<Sesion>();
 		STATUS = Status.DISCONNECTED;
 	}
@@ -48,8 +61,16 @@ public class UserManager {
 	 * Returns the list of sesions available.
 	 * @return list of sesions.
 	 */
-	public List<Sesion> getSesions(){
-		return sesions;
+	public Iterator<Sesion> getSesionsIterator(){
+		return sesions.iterator();
+	}
+	
+	public int getSesionCount(){
+	    return sesions.size();
+	}
+	
+	public Sesion getSesion(int index){
+	    return sesions.get(index);
 	}
 
 	/**

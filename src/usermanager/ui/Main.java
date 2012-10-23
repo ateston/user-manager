@@ -3,6 +3,7 @@ package usermanager.ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Iterator;
 import java.util.List;
 
 import usermanager.UserManager;
@@ -21,7 +22,7 @@ public class Main {
 	static BufferedReader br;
 
 	public static void main(String[] args){
-		um = new UserManager();
+		um = UserManager.getInstance();
 		sha1 = new SHA1();
 		System.out.println("D>> created user-manager");
 
@@ -126,16 +127,17 @@ public class Main {
 	}
 
 	public static void joinSesion(){
-		List<Sesion> sesions =  um.getSesions();
-		if(sesions.size() > 0)
+		Iterator<Sesion> sesions =  um.getSesionsIterator();
+		if(um.getSesionCount() > 0)
 			System.out.println("Select sesion to join: ");
 
-		for(int i = 0; i < sesions.size(); i++){
-			System.out.println(i + ") " + sesions.get(i).getName());
+		int i = 0;
+		while(sesions.hasNext()){
+			System.out.println(i + ") " + sesions.next().getName());
 		}
 
 		int option = 0;
-		while(option != 0 && sesions.size() > 0){
+		while(option != 0 && um.getSesionCount() > 0){
 			try {
 				option = Integer.parseInt(br.readLine());
 			} catch (NumberFormatException | IOException e) {
@@ -144,7 +146,7 @@ public class Main {
 			}
 
 			if(option > 0){
-				Sesion sesion = sesions.get(option);
+				Sesion sesion = um.getSesion(option);
 				System.out.println("Joining sesion of name: " + sesion.getName());
 				um.joinSesion(sesion);
 				System.out.println("Sesion joined!");

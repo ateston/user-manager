@@ -1,11 +1,15 @@
 package usermanager.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import usermanager.util.SHA1;
 
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    
     private String username = null;
     private String password = null;
     private List<Device> devices;
