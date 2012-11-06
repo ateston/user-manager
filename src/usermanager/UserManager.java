@@ -198,4 +198,28 @@ public class UserManager implements IUserManager, Serializable {
         return serial;
     }
 
+
+
+    /* Metodos relacionados con resource Manager */
+
+    public void consumptionFinished(int resource_id, String path) {
+        //Dejar recurso como inactivo en la lista
+
+    }
+
+    public void consumptionFailed(int resource_id, String error) {
+        // informar error
+
+    }
+
+    public void consumptionInterrupted(int resource_id, String error) {
+        
+
+    }
+
+    public void consumptionStarted(int resource_id, String[] details) {
+        //Se deja como recurso activo en la lista
+
+    }
+
 }

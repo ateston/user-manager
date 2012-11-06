@@ -6,9 +6,8 @@ import usermanager.bridge.IResourceManagerBridge;
 
 public class Device implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    
-    protected String type = null;
+  private static final long serialVersionUID = 1L;    
+  protected String type = null;
 	protected String uid = null;
 	protected String ipAddress = null;
 	protected String macAddress = null;
