@@ -1,6 +1,7 @@
 package usermanager;
 import usermanager.bridge.*;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,162 +10,218 @@ import java.util.List;
 import usermanager.model.Device;
 import usermanager.model.Sesion;
 import usermanager.model.User;
+import usermanager.util.Encoder;
 import usermanager.util.Status;
 
 public class UserManager implements IUserManager, ICommBridge, Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private List<Sesion> sesions = null;
-	private Sesion currentSesion = null;
+    private Sesion currentSesion = null;
 
-	private User currentUser;
-	private Device currentDevice;
-	
-	private static UserManager um;
-	
-	public static UserManager getInstance(){
-	    if(um == null){
-	        um = new UserManager();
-	    }
-	    return um;
-	}
+    private User currentUser;
+    private Device currentDevice;
 
-	private int STATUS = Status.DISCONNECTED;
+    private static UserManager um;
 
-	/**
-	 * Constructor of user manager, inititalizes the list of sesions and sets default status (disconnected).
-	 */
-	private UserManager(){
-		sesions = new ArrayList<Sesion>();
-		STATUS = Status.DISCONNECTED;
-	}
+    public static UserManager getInstance() {
+        if (um == null) {
+            um = new UserManager();
+        }
+        return um;
+    }
 
-	/**
-	 * Sets the user and device for this user manager.
-	 * @param user user for this user manager.
-	 * @param device device for this user manager. 
-	 */
-	public void setUser(User user, Device device){
-		this.currentUser = user;
-		this.currentDevice = device;
-	}
+    private int STATUS = Status.DISCONNECTED;
 
-	/**
-	 * Returns the current sesion.
-	 * @return the current sesion.
-	 */
-	public Sesion getCurrentSesion(){
-		return currentSesion;
-	}
+    /**
+     * Constructor of user manager, inititalizes the list of sesions and sets
+     * default status (disconnected).
+     */
+    private UserManager() {
+        sesions = new ArrayList<Sesion>();
+        STATUS = Status.DISCONNECTED;
+    }
 
-	/**
-	 * Returns the list of sesions available.
-	 * @return list of sesions.
-	 */
-	public Iterator<Sesion> getSesionsIterator(){
-		return sesions.iterator();
-	}
-	
-	public int getSesionCount(){
-	    return sesions.size();
-	}
-	
-	public Sesion getSesion(int index){
-	    return sesions.get(index);
-	}
+    /**
+     * Sets the user and device for this user manager.
+     * 
+     * @param user
+     *            user for this user manager.
+     * @param device
+     *            device for this user manager.
+     */
+    public void setUser(User user, Device device) {
+        this.currentUser = user;
+        this.currentDevice = device;
+    }
 
-	/**
-	 * Returns the current device.
-	 * @return current device.
-	 */
-	public Device getCurrentDevice(){
-		return currentDevice;
-	}
+    /**
+     * Returns the current sesion.
+     * 
+     * @return the current sesion.
+     */
+    public Sesion getCurrentSesion() {
+        return currentSesion;
+    }
 
-	/**
-	 * Returns the current user.
-	 * @return the current user.
-	 */
-	public User getCurrentUser(){
-		return currentUser;
-	}
+    /**
+     * Returns the list of sesions available.
+     * 
+     * @return list of sesions.
+     */
+    public Iterator<Sesion> getSesionsIterator() {
+        return sesions.iterator();
+    }
 
-	/**
-	 * Adds a sesion for this user manager.
-	 * @param sesion sesion to add.
-	 */
-	public void addSesion(Sesion sesion){
-		sesions.add(sesion);
-	}
+    public int getSesionCount() {
+        return sesions.size();
+    }
 
-	/**
-	 * Switches the current sesion for the sesion given.
-	 * @param sesion sesion given to switch.
-	 */
-	public void joinSesion(Sesion sesion){
-		this.currentSesion = sesion;
-		STATUS = Status.CONNECTED;
-	}
+    public Sesion getSesion(int index) {
+        return sesions.get(index);
+    }
 
-	/**
-	 * Leaves the current sesion.
-	 * @param sesion sesion to leave.
-	 */
-	public void leaveSesion(Sesion sesion){
-		this.currentSesion = null;
-		STATUS = Status.DISCONNECTED;
-	}
+    /**
+     * Returns the current device.
+     * 
+     * @return current device.
+     */
+    public Device getCurrentDevice() {
+        return currentDevice;
+    }
 
-	/**
-	 * Disconnects the device.
-	 * @param device device for disconnect.
-	 * @throws NoSuchMethodException not implemented yet.
-	 */
-	public void disconnectDevice(Device device) throws NoSuchMethodException{
-		//TODO complete this.
-		throw new NoSuchMethodException();
-	}
+    /**
+     * Returns the current user.
+     * 
+     * @return the current user.
+     */
+    public User getCurrentUser() {
+        return currentUser;
+    }
 
-	/**
-	 * Returns the status of user manager.
-	 * @return status code.
-	 * @see usermanager.util.Status usermanager.util.Status for values.
-	 */
-	public int getStatus(){
-		return STATUS;
-	}
+    /**
+     * Adds a sesion for this user manager.
+     * 
+     * @param sesion
+     *            sesion to add.
+     */
+    public void addSesion(Sesion sesion) {
+        sesions.add(sesion);
+    }
 
-	/**
-	 * Returns a string status of the user manager (for logging).
-	 * @return String indicating the status of the user manager.
-	 */
-	public String getUserMangerStatus(){
-		String sesion = "null";
-		String user = currentUser.getUsername();
-		String device = currentDevice.getMacAddress();
-		return "current sesion name: " + sesion + ", current username: " + user + "(" + STATUS + ")" +", current device: " + device;
-	}
+    /**
+     * Switches the current sesion for the sesion given.
+     * 
+     * @param sesion
+     *            sesion given to switch.
+     */
+    public void joinSesion(Sesion sesion) {
+        this.currentSesion = sesion;
+        STATUS = Status.CONNECTED;
+    }
 
-	/**
-	 * Returns a string indicating the status of the user manager.
-	 * @return status string.
-	 */
-	public String getStringStatus(){
-		switch(STATUS){
-		case Status.CONNECTED:
-			return "connected";
-		case Status.DISCONNECTED:
-			return "disconnected";
-		case Status.CONNECTING:
-			return "connecting";
-		case Status.UPDATED:
-			return "updated";
-		case Status.UPDATING:
-			return "updating";
-		}
-		return null;
-	}
+    /**
+     * Leaves the current sesion.
+     * 
+     * @param sesion
+     *            sesion to leave.
+     */
+    public void leaveSesion(Sesion sesion) {
+        this.currentSesion = null;
+        STATUS = Status.DISCONNECTED;
+    }
+
+    /**
+     * Disconnects the device.
+     * 
+     * @param device
+     *            device for disconnect.
+     * @throws NoSuchMethodException
+     *             not implemented yet.
+     */
+    public void disconnectDevice(Device device) throws NoSuchMethodException {
+        // TODO complete this.
+        throw new NoSuchMethodException();
+    }
+
+    /**
+     * Returns the status of user manager.
+     * 
+     * @return status code.
+     * @see usermanager.util.Status usermanager.util.Status for values.
+     */
+    public int getStatus() {
+        return STATUS;
+    }
+
+    /**
+     * Returns a string status of the user manager (for logging).
+     * 
+     * @return String indicating the status of the user manager.
+     */
+    public String getUserMangerStatus() {
+        String sesion = "null";
+        String user = currentUser.getUsername();
+        String device = currentDevice.getMacAddress();
+        return "current sesion name: " + sesion + ", current username: " + user + "(" + STATUS + ")"
+                + ", current device: " + device;
+    }
+
+    /**
+     * Returns a string indicating the status of the user manager.
+     * 
+     * @return status string.
+     */
+    public String getStringStatus() {
+        switch (STATUS) {
+        case Status.CONNECTED:
+            return "connected";
+        case Status.DISCONNECTED:
+            return "disconnected";
+        case Status.CONNECTING:
+            return "connecting";
+        case Status.UPDATED:
+            return "updated";
+        case Status.UPDATING:
+            return "updating";
+        }
+        return null;
+    }
+
+    public String getSerializedString() {
+        String serial = null;
+        try {
+            serial = Encoder.toString(this);
+        } catch (IOException e) {
+            System.out.println("An error ocurred when trying to serialize");
+        }
+        return serial;
+    }
+
+
+
+    /* Metodos relacionados con resource Manager */
+
+    public void consumptionFinished(int resource_id, String path) {
+        //Dejar recurso como inactivo en la lista
+
+    }
+
+    public void consumptionFailed(int resource_id, String error) {
+        // informar error
+
+    }
+
+    public void consumptionInterrupted(int resource_id, String error) {
+        
+
+    }
+
+    public void consumptionStarted(int resource_id, String[] details) {
+        //Se deja como recurso activo en la lista
+
+    }
 
 	@Override
 	public Object getCurrentSession() {

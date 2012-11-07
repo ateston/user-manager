@@ -140,10 +140,15 @@ public class Main {
 		while(option != 0 && um.getSesionCount() > 0){
 			try {
 				option = Integer.parseInt(br.readLine());
-			} catch (NumberFormatException | IOException e) {
+			} catch (NumberFormatException e) {
 				System.out.println("An error ocurred when trying to parse option");
+				e.printStackTrace();
 				option = 0;
-			}
+			} catch (IOException e) {
+                System.out.println("An error ocurred when trying to parse option");
+                e.printStackTrace();
+                option = 0;
+            }
 
 			if(option > 0){
 				Sesion sesion = um.getSesion(option);
@@ -195,10 +200,13 @@ public class Main {
 		while(option != 0 && devices.size() > 0){
 			try {
 				option = Integer.parseInt(br.readLine());
-			} catch (NumberFormatException | IOException e) {
+			} catch (NumberFormatException e) {
 				System.out.println("An error ocurred when trying to parse option");
 				option = 0;
-			}
+			} catch (IOException e) {
+			    System.out.println("An error ocurred when trying to parse option");
+                option = 0;
+            }
 
 			if(option > 0){
 				Device device = devices.get(option);
@@ -222,10 +230,13 @@ public class Main {
 			while(option != 0 && devices.size() > 0){
 				try {
 					option = Integer.parseInt(br.readLine());
-				} catch (NumberFormatException | IOException e) {
+				} catch (NumberFormatException e) {
 					System.out.println("An error ocurred when trying to parse option");
 					option = 0;
-				}
+				} catch (IOException e) {
+				    System.out.println("An error ocurred when trying to parse option");
+                    option = 0;
+                }
 
 				if(option > 0){
 					Device device = devices.get(option);
