@@ -1,4 +1,5 @@
 package usermanager;
+import usermanager.bridge.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import usermanager.model.Sesion;
 import usermanager.model.User;
 import usermanager.util.Status;
 
-public class UserManager implements IUserManager, Serializable {
+public class UserManager implements IUserManager, ICommBridge, Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -163,6 +164,36 @@ public class UserManager implements IUserManager, Serializable {
 			return "updating";
 		}
 		return null;
+	}
+
+	@Override
+	public Object getCurrentSession() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setSession(Object session) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void connectionError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void disconnectUser(String user) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateUser(Object updatedUser) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
