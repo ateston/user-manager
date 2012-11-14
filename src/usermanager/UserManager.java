@@ -53,7 +53,7 @@ public class UserManager implements IUserManager, Serializable {
 			if(!com_manager.connectToSession())
 			{
 				//Soy el primero en conectarme por lo que tengo que crear la session
-				setCurrentSession(new Sesion());
+				joinSesion(new Sesion());
 				sesions.add(currentSesion);
 				currentSesion.getUsersList().add(currentUser);
 			}else
@@ -87,7 +87,7 @@ public class UserManager implements IUserManager, Serializable {
     	}
     	else if(message.action == "set_session")
     	{
-    		setCurrentSession((Sesion) message.pack);
+    		joinSesion((Sesion) message.pack);
     		currentSesion.getUsersList().add(currentUser);
     		sesions.add(currentSesion);
     		//Notificar al resto la incorporacion a la sesion
@@ -97,6 +97,10 @@ public class UserManager implements IUserManager, Serializable {
     	else if(message.action == "add_user")
     	{
     		currentSesion.getUsersList().add((User) message.pack);
+    	}
+    	else if(message.action == "remove_user")
+    	{
+    		currentSesion.getUsersList().remove((User) message.pack);
     	}
     }
 
@@ -174,6 +178,9 @@ public class UserManager implements IUserManager, Serializable {
     public void leaveSesion(Sesion sesion) {
         this.currentSesion = null;
         STATUS = Status.DISCONNECTED;
+        
+        UMMessage mess = new UMMessage(this, "remove_user", currentUser);
+		com_manager.sendToAll(mess);
     }
 
     /**
@@ -267,10 +274,6 @@ public class UserManager implements IUserManager, Serializable {
 
     }
     
-    public void setCurrentSession(Sesion ses) {
-		this.currentSesion = ses;
-		STATUS = Status.CONNECTED;
-	}
     
 	public Sesion getCurrentSession() {
 		// TODO Auto-generated method stub
