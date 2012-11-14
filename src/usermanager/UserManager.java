@@ -13,7 +13,10 @@ import usermanager.model.User;
 import usermanager.util.Encoder;
 import usermanager.util.Status;
 
-public class UserManager implements IUserManager, ICommBridge, Serializable {
+import communication.*;
+
+
+public class UserManager implements IUserManager, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,6 +25,8 @@ public class UserManager implements IUserManager, ICommBridge, Serializable {
 
     private User currentUser;
     private Device currentDevice;
+    
+    private Communication com_manager;
 
     private static UserManager um;
 
@@ -41,19 +46,58 @@ public class UserManager implements IUserManager, ICommBridge, Serializable {
     private UserManager() {
         sesions = new ArrayList<Sesion>();
         STATUS = Status.DISCONNECTED;
-    }
+        
+        currentUser = new User();
 
-    /**
-     * Sets the user and device for this user manager.
-     * 
-     * @param user
-     *            user for this user manager.
-     * @param device
-     *            device for this user manager.
-     */
-    public void setUser(User user, Device device) {
-        this.currentUser = user;
-        this.currentDevice = device;
+        try {
+			if(!com_manager.connectToSession())
+			{
+				//Soy el primero en conectarme por lo que tengo que crear la session
+				setCurrentSession(new Sesion());
+				sesions.add(currentSesion);
+				currentSesion.getUsersList().add(currentUser);
+			}else
+			{
+				//Envio un mensaje al primer usario de la sesion para que me devuelva la sesion
+				int first = com_manager.getNodos().get(0);
+				UMMessage message = new UMMessage(this, "get_session", null);
+				com_manager.sendObject(message, first);
+			}
+			
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+    }
+    
+    public void recieveMessage(int sender, UMMessage message)
+    {
+    	if(message.action == "get_session")
+    	{
+    		UMMessage response = new UMMessage(this, "set_session", getCurrentSesion());
+    		try {
+				com_manager.sendObject(response, sender);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	else if(message.action == "set_session")
+    	{
+    		setCurrentSession((Sesion) message.pack);
+    		currentSesion.getUsersList().add(currentUser);
+    		sesions.add(currentSesion);
+    		//Notificar al resto la incorporacion a la sesion
+    		UMMessage mess = new UMMessage(this, "add_user", currentUser);
+    		com_manager.sendToAll(mess);
+    	}
+    	else if(message.action == "add_user")
+    	{
+    		currentSesion.getUsersList().add((User) message.pack);
+    	}
     }
 
     /**
@@ -222,33 +266,23 @@ public class UserManager implements IUserManager, ICommBridge, Serializable {
         //Se deja como recurso activo en la lista
 
     }
-
-	@Override
-	public Object getCurrentSession() {
+    
+    public void setCurrentSession(Sesion ses) {
+		this.currentSesion = ses;
+		STATUS = Status.CONNECTED;
+	}
+    
+	public Sesion getCurrentSession() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public void setSession(Object session) {
+	public void disconnectUser(int user_id) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public void connectionError(String error) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void disconnectUser(String user) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateUser(Object updatedUser) {
+	public void updateUser(User updatedUser) {
 		// TODO Auto-generated method stub
 		
 	}

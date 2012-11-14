@@ -1,5 +1,7 @@
 package usermanager.model;
 
+import java.security.SecureRandom;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ public class Sesion implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private String name;
+    private int id;
     private String password;
     private List<User> users;
     private User owner;
@@ -20,9 +23,11 @@ public class Sesion implements Serializable {
      * @param name name of the sesion.
      * @param password password of the sesion.
      */
-    public Sesion(String name, String password){
-        this.name = name;
-        this.password = new SHA1().getHash(password);
+    public Sesion(){
+//        this.name = name;
+//        this.password = new SHA1().getHash(password);
+    	SecureRandom random = new SecureRandom();
+    	this.id = random.nextInt();
         this.users = new ArrayList<User>();
     }
 
