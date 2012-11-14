@@ -8,7 +8,6 @@ public interface ICommBridge {
 	 */
 	public Object getCurrentSession();
 	
-	
 	/**
 	 * Sets the session as the actual session
 	 * @params Object session to set as actual session  .
