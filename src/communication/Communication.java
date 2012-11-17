@@ -144,6 +144,14 @@ public class Communication {
 		} else
 			System.out.println("El nodo " + idDestino + " no est‡ conectado");
 	}
+	
+	public void recieveObject(Object obj)
+	{
+		if((UMMessage) obj != null)
+		{
+			UserManager.getInstance().recieveMessage((UMMessage) obj);
+		}
+	}
 
 	// MŽtodo que prueba si el puerto idDestino est‡ activo. Se le env’a un
 	// mensaje de caracter Solicitar Llegada --> 0

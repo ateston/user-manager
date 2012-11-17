@@ -73,8 +73,9 @@ public class UserManager implements IUserManager, Serializable {
         
     }
     
-    public void recieveMessage(int sender, UMMessage message)
+    public void recieveMessage(UMMessage message)
     {
+    	int sender = message.sender_id;
     	if(message.action == "get_session")
     	{
     		UMMessage response = new UMMessage(this, "set_session", getCurrentSesion());
