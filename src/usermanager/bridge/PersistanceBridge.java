@@ -1,5 +1,5 @@
 package usermanager.bridge;
-
+/*
 public class PersistanceBridge implements IPersistanceBridge {
 
     private IPersistencia persistencia;
@@ -18,4 +18,4 @@ public class PersistanceBridge implements IPersistanceBridge {
         return persistencia.RecuperarPorDigest(digest);
     }
 
-}
+}*/

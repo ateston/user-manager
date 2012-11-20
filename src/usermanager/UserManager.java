@@ -1,6 +1,4 @@
 package usermanager;
-import usermanager.bridge.*;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,7 +11,8 @@ import usermanager.model.User;
 import usermanager.util.Encoder;
 import usermanager.util.Status;
 
-import communication.*;
+import communication.Communication;
+import communication.UMMessage;
 
 
 public class UserManager implements IUserManager, Serializable {

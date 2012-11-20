@@ -45,10 +45,8 @@ public class Main {
 
 		System.out.println("Setting ur device... " + device.getIpAddress() + " " + device.getMacAddress());
 
-		User user = new User(username, password);
+		User user = um.getCurrentUser();
 		user.getDevices().add(device);
-
-		um.setUser(user, device);
 
 		int option = 0;
 		printMenu();
@@ -121,7 +119,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		System.out.println("Creating new sesion...");
-		Sesion sesion = new Sesion(name, password);
+		Sesion sesion = new Sesion();
 		um.addSesion(sesion);
 		System.out.println("Sesion created!");
 	}
@@ -211,7 +209,7 @@ public class Main {
 			if(option > 0){
 				Device device = devices.get(option);
 				System.out.println("Selected device of type: " + device.getType());
-				um.setUser(um.getCurrentUser(), device);
+				//um.setUser(um.getCurrentUser(), device);
 				System.out.println("Active device changed.");
 			}
 		}
