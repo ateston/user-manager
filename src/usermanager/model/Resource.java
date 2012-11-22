@@ -11,7 +11,6 @@ public class Resource implements IResource {
     private int vid_counter = 0;
 
     public boolean isAvailable() {
-
         return true;
     }
 
