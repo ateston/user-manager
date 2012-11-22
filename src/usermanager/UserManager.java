@@ -25,7 +25,6 @@ public class UserManager implements IUserManager, Serializable {
     private User currentUser;
     private Device currentDevice;
     
-    private Communication com_manager;
 
     private static UserManager um;
 
@@ -49,7 +48,7 @@ public class UserManager implements IUserManager, Serializable {
         currentUser = new User();
 
         try {
-			if(!com_manager.connectToSession())
+			if(!Communication.getInstance().connectToSession())
 			{
 				//Soy el primero en conectarme por lo que tengo que crear la session
 				joinSesion(new Sesion());
@@ -58,9 +57,9 @@ public class UserManager implements IUserManager, Serializable {
 			}else
 			{
 				//Envio un mensaje al primer usario de la sesion para que me devuelva la sesion
-				int first = com_manager.getNodos().get(0);
+				int first = Communication.getInstance().getNodos().get(0);
 				UMMessage message = new UMMessage(this, "get_session", null);
-				com_manager.sendObject(message, first);
+				Communication.getInstance().sendObject(message, first);
 			}
 			
 			
@@ -79,7 +78,7 @@ public class UserManager implements IUserManager, Serializable {
     	{
     		UMMessage response = new UMMessage(this, "set_session", getCurrentSesion());
     		try {
-				com_manager.sendObject(response, sender);
+    			Communication.getInstance().sendObject(response, sender);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -92,7 +91,7 @@ public class UserManager implements IUserManager, Serializable {
     		sesions.add(currentSesion);
     		//Notificar al resto la incorporacion a la sesion
     		UMMessage mess = new UMMessage(this, "add_user", currentUser);
-    		com_manager.sendToAll(mess);
+    		Communication.getInstance().sendToAll(mess);
     	}
     	else if(message.action == "add_user")
     	{
@@ -180,7 +179,7 @@ public class UserManager implements IUserManager, Serializable {
         STATUS = Status.DISCONNECTED;
         
         UMMessage mess = new UMMessage(this, "remove_user", currentUser);
-		com_manager.sendToAll(mess);
+        Communication.getInstance().sendToAll(mess);
     }
 
     /**
