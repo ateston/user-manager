@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import usermanager.model.Device;
+import usermanager.model.Resource;
 import usermanager.model.Sesion;
 import usermanager.model.User;
 import usermanager.util.Encoder;
@@ -249,19 +250,33 @@ public class UserManager implements IUserManager, Serializable {
         }
         return serial;
     }
-
-
+    //actualizar estado recurso
+    
+    private void updateState(int resource_id, int state){
+    	
+	for( User usr : currentSesion.getUsersList()){    		
+		for( Resource rsrc : usr.getResources()){
+			if(rsrc.getId() == resource_id){
+				rsrc.setStatus(stat);
+			}			
+			
+			}		
+    	}		
+    	
+    	
+    }
 
     /* Metodos relacionados con resource Manager */
 
     public void consumptionFinished(int resource_id, String path) {
-        //Dejar recurso como inactivo en la lista
+       
+    	updateState(resource_id, 0);
 
     }
 
     public void consumptionFailed(int resource_id, String error) {
         // informar error
-
+    	
     }
 
     public void consumptionInterrupted(int resource_id, String error) {
@@ -271,7 +286,7 @@ public class UserManager implements IUserManager, Serializable {
 
     public void consumptionStarted(int resource_id, String[] details) {
         //Se deja como recurso activo en la lista
-
+    	updateState(resource_id, 1);
     }
     
     

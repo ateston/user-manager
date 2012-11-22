@@ -5,9 +5,10 @@ import java.io.Serializable;
 import usermanager.bridge.IResourceManagerBridge;
 
 public class Resource implements IResource {
-																						//0				1		2				3			4			5
+										        //0				1		2				3			4			5
 	public static final String[] RESOURCES = {"AVAILABLE","IN USE","NOT PRESENT","RECORDING","STREAMING","NOT AVAILABLE"};
 	private int id;
+	private int user_id;
 	private int status = 0;
 	private IConsumptionObs observer;
 	private int pic_counter = 0;
@@ -35,9 +36,23 @@ public class Resource implements IResource {
 		return status;
 	}
 
+	public void setStatus(int stat){
+		this.status = stat;
+		
+	}
 	public void setId(int _id) {
 		this.id = _id;
 	}
+	
+	public int getId(){
+		
+		return id;
+	}
 
+	public int getUserId()
+	{
+		
+		return this.user_id;
+	}
 
 }
