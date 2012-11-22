@@ -257,7 +257,7 @@ public class UserManager implements IUserManager, Serializable {
 	for( User usr : currentSesion.getUsersList()){    		
 		for( Resource rsrc : usr.getResources()){
 			if(rsrc.getId() == resource_id){
-				rsrc.setStatus(stat);
+				rsrc.setStatus(state);
 			}			
 			
 			}		
