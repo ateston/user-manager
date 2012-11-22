@@ -1,5 +1,4 @@
 package usermanager;
-import usermanager.bridge.*;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -13,8 +12,8 @@ import usermanager.model.User;
 import usermanager.util.Encoder;
 import usermanager.util.Status;
 
-import communication.*;
-
+import communication.Communication;
+import communication.UMMessage;
 
 public class UserManager implements IUserManager, Serializable {
 
@@ -25,7 +24,7 @@ public class UserManager implements IUserManager, Serializable {
 
     private User currentUser;
     private Device currentDevice;
-    
+
     private Communication com_manager;
 
     private static UserManager um;
@@ -46,62 +45,53 @@ public class UserManager implements IUserManager, Serializable {
     private UserManager() {
         sesions = new ArrayList<Sesion>();
         STATUS = Status.DISCONNECTED;
-        
+
         currentUser = new User();
 
         try {
-			if(!com_manager.connectToSession())
-			{
-				//Soy el primero en conectarme por lo que tengo que crear la session
-				joinSesion(new Sesion());
-				sesions.add(currentSesion);
-				currentSesion.getUsersList().add(currentUser);
-			}else
-			{
-				//Envio un mensaje al primer usario de la sesion para que me devuelva la sesion
-				int first = com_manager.getNodos().get(0);
-				UMMessage message = new UMMessage(this, "get_session", null);
-				com_manager.sendObject(message, first);
-			}
-			
-			
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
+            if (!com_manager.connectToSession()) {
+                // Soy el primero en conectarme por lo que tengo que crear la
+                // session
+                joinSesion(new Sesion());
+                sesions.add(currentSesion);
+                currentSesion.getUsersList().add(currentUser);
+            } else {
+                // Envio un mensaje al primer usario de la sesion para que me
+                // devuelva la sesion
+                int first = com_manager.getNodos().get(0);
+                UMMessage message = new UMMessage(this, "get_session", null);
+                com_manager.sendObject(message, first);
+            }
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
-    
-    public void recieveMessage(int sender, UMMessage message)
-    {
-    	if(message.action == "get_session")
-    	{
-    		UMMessage response = new UMMessage(this, "set_session", getCurrentSesion());
-    		try {
-				com_manager.sendObject(response, sender);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	}
-    	else if(message.action == "set_session")
-    	{
-    		joinSesion((Sesion) message.pack);
-    		currentSesion.getUsersList().add(currentUser);
-    		sesions.add(currentSesion);
-    		//Notificar al resto la incorporacion a la sesion
-    		UMMessage mess = new UMMessage(this, "add_user", currentUser);
-    		com_manager.sendToAll(mess);
-    	}
-    	else if(message.action == "add_user")
-    	{
-    		currentSesion.getUsersList().add((User) message.pack);
-    	}
-    	else if(message.action == "remove_user")
-    	{
-    		currentSesion.getUsersList().remove((User) message.pack);
-    	}
+
+    public void recieveMessage(UMMessage message) {
+        int sender = message.sender_id;
+        if (message.action == "get_session") {
+            UMMessage response = new UMMessage(this, "set_session", getCurrentSesion());
+            try {
+                com_manager.sendObject(response, sender);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } else if (message.action == "set_session") {
+            joinSesion((Sesion) message.pack);
+            currentSesion.getUsersList().add(currentUser);
+            sesions.add(currentSesion);
+            // Notificar al resto la incorporacion a la sesion
+            UMMessage mess = new UMMessage(this, "add_user", currentUser);
+            com_manager.sendToAll(mess);
+        } else if (message.action == "add_user") {
+            currentSesion.getUsersList().add((User) message.pack);
+        } else if (message.action == "remove_user") {
+            currentSesion.getUsersList().remove((User) message.pack);
+        }
     }
 
     /**
@@ -178,9 +168,9 @@ public class UserManager implements IUserManager, Serializable {
     public void leaveSesion(Sesion sesion) {
         this.currentSesion = null;
         STATUS = Status.DISCONNECTED;
-        
+
         UMMessage mess = new UMMessage(this, "remove_user", currentUser);
-		com_manager.sendToAll(mess);
+        com_manager.sendToAll(mess);
     }
 
     /**
@@ -250,12 +240,10 @@ public class UserManager implements IUserManager, Serializable {
         return serial;
     }
 
-
-
     /* Metodos relacionados con resource Manager */
 
     public void consumptionFinished(int resource_id, String path) {
-        //Dejar recurso como inactivo en la lista
+        // Dejar recurso como inactivo en la lista
 
     }
 
@@ -265,29 +253,27 @@ public class UserManager implements IUserManager, Serializable {
     }
 
     public void consumptionInterrupted(int resource_id, String error) {
-        
 
     }
 
     public void consumptionStarted(int resource_id, String[] details) {
-        //Se deja como recurso activo en la lista
+        // Se deja como recurso activo en la lista
 
     }
-    
-    
-	public Sesion getCurrentSession() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public void disconnectUser(int user_id) {
-		// TODO Auto-generated method stub
-		
-	}
+    public Sesion getCurrentSession() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	public void updateUser(User updatedUser) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void disconnectUser(int user_id) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void updateUser(User updatedUser) {
+        // TODO Auto-generated method stub
+
+    }
 
 }

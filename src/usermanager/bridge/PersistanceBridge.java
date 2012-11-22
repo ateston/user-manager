@@ -1,21 +1,24 @@
 package usermanager.bridge;
 
+import modelo.Local;
+import modelo.Persistencia;
+import modelo.Token;
+
 public class PersistanceBridge implements IPersistanceBridge {
 
-    private IPersistencia persistencia;
+    private Persistencia persistencia = new Persistencia(new Local());
 
-    public void setPersistencia(IPersistencia persistencia) {
-        this.persistencia = persistencia;
-    }
+    /*
+     * public void setPersistencia(IPersistencia persistencia) {
+     * this.persistencia = persistencia; }
+     */
 
-    @Override
     public byte[] save(String userId, String deviceId, String message) {
         return persistencia.Guardar(userId, deviceId, message);
     }
 
-    @Override
-    public String recoverFromDigest(byte[] digest) {
-        return persistencia.RecuperarPorDigest(digest);
+    public Token recoverFromDigest(byte[] digest) {
+        return persistencia.Recuperar(digest);
     }
 
 }
