@@ -1,6 +1,6 @@
 package usermanager.model;
 
-public class Resource implements IResource {
+public class ResourceState implements IResource {
     // 0 1 2 3 4 5
     public static final String[] RESOURCES = { "AVAILABLE", "IN USE", "NOT PRESENT", "RECORDING", "STREAMING",
             "NOT AVAILABLE" };
@@ -9,6 +9,7 @@ public class Resource implements IResource {
     private IConsumptionObs observer;
     private int pic_counter = 0;
     private int vid_counter = 0;
+    private int user_id = 0;
 
     public boolean isAvailable() {
         return true;
@@ -33,6 +34,24 @@ public class Resource implements IResource {
 
     public void setId(int _id) {
         this.id = _id;
+    }
+    
+    public int getId(){
+    	return this.id;    	
+    }
+    
+    
+    public void setStatus(int stat){
+    	
+    	this.status = stat;
+    }
+    
+    public void setUserId(int id){
+    	this.user_id = id;
+    }
+    
+    public int getUserId(){
+    	return this.user_id;
     }
 
 }

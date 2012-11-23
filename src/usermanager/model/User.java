@@ -12,7 +12,7 @@ public class User implements Serializable {
     private String username = null;
     private int id;
     private String password = null;
-    private List<Resource> resources;
+    private List<ResourceState> resources;
 
     /**
      * Constructor for user, receives the username and password.
@@ -27,7 +27,8 @@ public class User implements Serializable {
         // this.password = new SHA1().getHash(password);
         SecureRandom random = new SecureRandom();
         this.id = random.nextInt();
-        this.resources = new ArrayList<Resource>();
+        //this.devices = new ArrayList<Device>();
+        this.resources = new ArrayList<ResourceState>();
     }
 
     public int getId() {
@@ -57,7 +58,11 @@ public class User implements Serializable {
      * 
      * @return the list of devices.
      */
-    public List<Resource> getResources() {
+   /* public List<Device> getDevices() {
+        return devices;
+    }*/
+
+    public List<ResourceState> getResources() {
         return this.resources;
     }
     

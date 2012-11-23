@@ -2,8 +2,6 @@ package usermanager.model;
 
 import java.io.Serializable;
 
-import usermanager.bridge.IResourceManagerBridge;
-
 public class Device implements Serializable {
 
   private static final long serialVersionUID = 1L;    
