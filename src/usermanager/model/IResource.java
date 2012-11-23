@@ -1,8 +1,5 @@
 package usermanager.model;
 
-import java.io.Serializable;
-
-import usermanager.bridge.IResourceManagerBridge;
 
 public interface IResource {
 
