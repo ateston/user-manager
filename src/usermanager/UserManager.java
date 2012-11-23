@@ -48,6 +48,7 @@ public class UserManager implements IUserManager, Serializable {
         STATUS = Status.DISCONNECTED;
         
         currentUser = new User();
+        
 
         try {
 			if(!com_manager.connectToSession())
@@ -258,6 +259,7 @@ public class UserManager implements IUserManager, Serializable {
 		for( Resource rsrc : usr.getResources()){
 			if(rsrc.getId() == resource_id){
 				rsrc.setStatus(state);
+				return;
 			}			
 			
 			}		
@@ -275,7 +277,7 @@ public class UserManager implements IUserManager, Serializable {
     }
 
     public void consumptionFailed(int resource_id, String error) {
-        // informar error
+        // informar error mensaje UI
     	
     }
 
@@ -288,8 +290,7 @@ public class UserManager implements IUserManager, Serializable {
         //Se deja como recurso activo en la lista
     	updateState(resource_id, 1);
     }
-    
-    
+        
 	public Sesion getCurrentSession() {
 		// TODO Auto-generated method stub
 		return null;
@@ -305,4 +306,22 @@ public class UserManager implements IUserManager, Serializable {
 		
 	}
 
+	public List<ResourceState> getResourceList(){
+		
+		List<Resource> lista_recursos = new ArrayList<Resource>();
+		
+		for( User usr : currentSesion.getUsersList()){    		
+			for( Resource rsrc : usr.getResources()){
+				
+				if(rsrc.getStatus() == 0)
+					lista_recursos.add(rsrc);
+				
+			}
+			
+		}
+		
+		return lista_recursos;
+		
+	
+	}
 }

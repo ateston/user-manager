@@ -60,4 +60,9 @@ public class User implements Serializable {
     public List<Resource> getResources() {
         return this.resources;
     }
+    
+    
+    public void updateResources(){
+    	
+    }
 }
